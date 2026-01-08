@@ -2,97 +2,91 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Happy Valentine’s Day 💗</title>
+<title>Happy Valentine’s Day 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Baloo+2:wght@800&display=swap" rel="stylesheet">
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Baloo+2:wght@600&display=swap');
-
   body {
     margin: 0;
     height: 100vh;
     background: linear-gradient(135deg, #ffd6eb, #ffeef7);
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Baloo 2', cursive;
+    overflow: hidden;
+    text-align: center;
   }
 
-  /* Soft glow overlay */
-  body::before {
-    content: "";
+  /* START SCREEN */
+  #startScreen {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at top, rgba(255,255,255,0.6), transparent 60%);
-    pointer-events: none;
+    background: linear-gradient(135deg, #ffd1e8, #ff9ecf);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    cursor: pointer;
   }
 
+  .startText {
+    font-family: 'Pacifico', cursive;
+    font-size: 42px;
+    color: #ff4fa0;
+    animation: bounce 2s infinite;
+  }
+
+  /* MAIN CARD */
   .card {
-    background: rgba(255,255,255,0.9);
-    padding: 50px 60px;
-    border-radius: 40px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-    text-align: center;
-    max-width: 620px;
+    background: white;
+    padding: 50px;
+    border-radius: 35px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    max-width: 520px;
     animation: fadeIn 2s ease forwards;
   }
 
-  h1 {
-    font-family: 'Pacifico', cursive;
-    color: #ff5fa2;
-    font-size: 42px;
-    margin-bottom: 25px;
-    animation: bounce 3s ease-in-out infinite;
-  }
-
-  p {
-    font-size: 20px;
-    color: #555;
-    line-height: 1.6;
-    margin: 10px 0;
-    animation: floatText 4s ease-in-out infinite;
+  .message {
+    font-family: 'Baloo 2', cursive;
+    font-size: 28px;
+    color: #ff4fa0;
+    animation: softBounce 3s infinite;
   }
 
   .signature {
     margin-top: 25px;
-    font-size: 22px;
-    color: #ff5fa2;
-    font-family: 'Pacifico', cursive;
-    animation: bounce 3.5s ease-in-out infinite;
+    font-size: 26px;
   }
 
-  /* Floating hearts */
+  /* FLOATING HEARTS */
   .heart {
     position: fixed;
-    bottom: -30px;
-    font-size: 28px;
-    animation: floatUp 10s linear infinite;
-    opacity: 0.8;
+    bottom: -20px;
+    font-size: 30px;
+    animation: floatUp 6s linear forwards;
+    pointer-events: none;
   }
 
   @keyframes floatUp {
-    from {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
     to {
-      transform: translateY(-120vh) scale(1.5);
+      transform: translateY(-120vh) rotate(360deg);
       opacity: 0;
     }
   }
 
   @keyframes bounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+    50% { transform: translateY(-15px); }
   }
 
-  @keyframes floatText {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+  @keyframes softBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
+    from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
   }
 </style>
@@ -100,39 +94,49 @@
 
 <body>
 
-<!-- 💗 MUSIC -->
-<audio autoplay loop>
+<!-- 🎬 START SCREEN -->
+<div id="startScreen">
+  <div class="startText">Tap to start 💗</div>
+</div>
+
+<!-- 🎶 MUSIC -->
+<audio id="bgMusic" loop>
   <source src="fireproof.mp3" type="audio/mpeg">
 </audio>
 
+<!-- 💌 FINAL MESSAGE -->
 <div class="card">
-  <h1>Happy Valentine’s Day 💕</h1>
+  <div class="message">
+    Happy Valentine’s Day 💕<br><br>
+    I hope you loved your gift as much as I love you.<br>
+    I miss you so much and can’t wait to see you.<br><br>
+  </div>
 
-  <p>
-    I hope you loved your gift as much as I love you.
-  </p>
-
-  <p>
-    I miss you so much and can’t wait to see you.
-  </p>
-
-  <p class="signature">
-    — love, maliha 💗
-  </p>
+  <div class="signature">
+    Love, Maliha 💌
+  </div>
 </div>
 
 <script>
-  // Floating hearts generator
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.textContent = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (8 + Math.random() * 6) + "s";
-    document.body.appendChild(heart);
+  const music = document.getElementById("bgMusic");
+  const startScreen = document.getElementById("startScreen");
 
-    setTimeout(() => heart.remove(), 12000);
-  }, 600);
+  startScreen.addEventListener("click", () => {
+    music.play();
+    startScreen.style.display = "none";
+    startHearts();
+  });
+
+  function startHearts() {
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = Math.random() > 0.5 ? "💖" : "💗";
+      heart.style.left = Math.random() * 100 + "vw";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }, 400);
+  }
 </script>
 
 </body>
